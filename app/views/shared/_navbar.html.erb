@@ -1,27 +1,21 @@
 <!-- Navigation -->
-<nav class="bg-white shadow-lg">
+<nav class="bg-white shadow-lg" data-controller="navbar">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
       <!-- Left side - Logo and main navigation -->
       <div class="flex">
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
-          <%= link_to root_path, class: "text-2xl font-bold text-indigo-600" do %>
+          <%= link_to root_path, class: "text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors duration-200" do %>
             U-Innova BnB
           <% end %>
         </div>
 
         <!-- Main navigation -->
         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-          <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-            Places to stay
-          </a>
-          <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-            Experiences
-          </a>
-          <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-            Online Experiences
-          </a>
+          <%= link_to "Places to stay", listings_path, class: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
+          <%= link_to "Experiences", "#", class: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
+          <%= link_to "Online Experiences", "#", class: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" %>
         </div>
       </div>
 
@@ -64,11 +58,13 @@
   <!-- Mobile menu -->
   <div class="block sm:hidden hidden" id="mobile-menu" data-navbar-target="menu">
     <div class="pt-2 pb-3 space-y-1">
-      <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Places to stay</a>
-      <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Experiences</a>
-      <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Online Experiences</a>
+      <%= link_to "Places to stay", listings_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
+      <%= link_to "Experiences", "#", class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
+      <%= link_to "Online Experiences", "#", class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
       <% if user_signed_in? %>
-        <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Become a Host</a>
+        <% if current_user.host? %>
+          <%= link_to "My Listings", listings_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
+        <% end %>
         <%= link_to "Profile", edit_user_registration_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
         <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
       <% else %>
