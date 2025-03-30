@@ -1,0 +1,35 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @listing.title %></h1>
+            <p class="text-gray-600">Hosted by <%= @listing.user.email %></p>
+          </div>
+          <div class="text-right">
+            <p class="text-2xl font-bold text-indigo-600">$<%= @listing.price_per_night %></p>
+            <p class="text-sm text-gray-500">per night</p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">About this place</h2>
+          <p class="text-gray-600"><%= @listing.description %></p>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Location</h2>
+          <p class="text-gray-600"><%= @listing.address %></p>
+        </div>
+
+        <% if user_signed_in? && @listing.user == current_user %>
+          <div class="flex gap-4 mt-6">
+            <%= link_to "Edit Listing", edit_listing_path(@listing), class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
+            <%= button_to "Delete Listing", listing_path(@listing), method: :delete, class: "bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors", data: { confirm: "Are you sure?" } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

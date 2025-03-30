@@ -1,0 +1,28 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">All Listings</h1>
+    <% if user_signed_in? && current_user.host? %>
+      <%= link_to "Create New Listing", new_listing_path, class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @listings.each do |listing| %>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">
+            <%= link_to listing.title, listing_path(listing), class: "hover:text-indigo-600" %>
+          </h2>
+          <p class="text-gray-600 mb-4 line-clamp-2"><%= listing.description %></p>
+          <div class="flex justify-between items-center">
+            <span class="text-indigo-600 font-semibold">$<%= listing.price_per_night %>/night</span>
+            <span class="text-sm text-gray-500">Hosted by <%= listing.user.email %></span>
+          </div>
+          <div class="mt-4 text-sm text-gray-500">
+            <p><%= listing.address %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
