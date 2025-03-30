@@ -25,6 +25,8 @@
           <div class="flex items-center space-x-4">
             <% if current_user.host? %>
               <%= link_to "My Listings", listings_path, class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
+            <% else %>
+              <%= link_to "My Bookings", bookings_path, class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
             <% end %>
             <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
           </div>
@@ -64,6 +66,8 @@
       <% if user_signed_in? %>
         <% if current_user.host? %>
           <%= link_to "My Listings", listings_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
+        <% else %>
+          <%= link_to "My Bookings", bookings_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
         <% end %>
         <%= link_to "Profile", edit_user_registration_path, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>
         <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" %>

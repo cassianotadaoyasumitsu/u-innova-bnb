@@ -60,8 +60,10 @@
         const checkOut = new Date(checkOutField.value);
         
         if (checkIn && checkOut && checkOut > checkIn) {
-          const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+          const diffTime = Math.abs(checkOut - checkIn);
+          const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
           const total = nights * pricePerNight;
+          
           totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
@@ -73,6 +75,19 @@
 
       checkInField.addEventListener('change', calculateTotalPrice);
       checkOutField.addEventListener('change', calculateTotalPrice);
+      checkInField.addEventListener('input', calculateTotalPrice);
+      checkOutField.addEventListener('input', calculateTotalPrice);
+
+      checkInField.addEventListener('change', function() {
+        const checkInDate = new Date(this.value);
+        const minCheckOutDate = new Date(checkInDate);
+        minCheckOutDate.setDate(checkInDate.getDate() + 1);
+        checkOutField.min = minCheckOutDate.toISOString().split('T')[0];
+        
+        if (checkOutField.value && new Date(checkOutField.value) <= checkInDate) {
+          checkOutField.value = minCheckOutDate.toISOString().split('T')[0];
+        }
+      });
     }
   });
 <% end %>
