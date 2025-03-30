@@ -1,8 +1,20 @@
 <div class="container mx-auto px-4 py-8">
   <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-      <div class="p-6">
-        <div class="flex justify-between items-start mb-6">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+      <% if @listing.images.attached? %>
+        <div class="relative">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+            <% @listing.images.each do |image| %>
+              <div class="aspect-w-16 aspect-h-9">
+                <%= image_tag image, class: "object-cover w-full h-full rounded-lg shadow-sm" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      
+      <div class="p-8">
+        <div class="flex justify-between items-start mb-8">
           <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @listing.title %></h1>
             <p class="text-gray-600">Hosted by <%= @listing.user.email %></p>
@@ -13,18 +25,18 @@
           </div>
         </div>
 
-        <div class="mb-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-2">About this place</h2>
-          <p class="text-gray-600"><%= @listing.description %></p>
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-3">About this place</h2>
+          <p class="text-gray-600 leading-relaxed"><%= @listing.description %></p>
         </div>
 
-        <div class="mb-6">
-          <h2 class="text-xl font-semibold text-gray-900 mb-2">Location</h2>
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-3">Location</h2>
           <p class="text-gray-600"><%= @listing.address %></p>
         </div>
 
         <% if user_signed_in? && @listing.user == current_user %>
-          <div class="flex gap-4 mt-6">
+          <div class="flex gap-4 mt-8 pt-6 border-t border-gray-200">
             <%= link_to "Edit Listing", edit_listing_path(@listing), class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
             <%= button_to "Delete Listing", listing_path(@listing), method: :delete, class: "bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors", data: { confirm: "Are you sure?" } %>
           </div>
