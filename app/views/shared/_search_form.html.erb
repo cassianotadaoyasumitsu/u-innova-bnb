@@ -1,0 +1,52 @@
+<!-- Search and Filter Form -->
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+  <%= form_with url: listings_path, method: :get, class: "p-6" do |f| %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Search Input -->
+      <div>
+        <%= f.label :query, "Search", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :query, 
+            value: params[:query],
+            placeholder: "Search by title, description, or address",
+            class: "w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm px-4 py-2" %>
+      </div>
+
+      <!-- Price Range -->
+      <div>
+        <%= f.label :min_price, "Min Price", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :min_price, 
+            value: params[:min_price],
+            placeholder: "Min price",
+            class: "w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm px-4 py-2" %>
+      </div>
+
+      <div>
+        <%= f.label :max_price, "Max Price", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :max_price, 
+            value: params[:max_price],
+            placeholder: "Max price",
+            class: "w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm px-4 py-2" %>
+      </div>
+
+      <!-- Sort Options -->
+      <div>
+        <%= f.label :sort, "Sort By", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :sort,
+            options_for_select([
+              ["Newest First", "date_desc"],
+              ["Price: Low to High", "price_asc"],
+              ["Price: High to Low", "price_desc"]
+            ], params[:sort]),
+            { include_blank: "Select sorting" },
+            class: "w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm px-4 py-2" %>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end space-x-4">
+      <%= link_to "Clear Filters", listings_path, 
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      <%= f.submit "Search", 
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+</div> 
