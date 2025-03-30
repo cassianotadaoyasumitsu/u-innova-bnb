@@ -13,9 +13,9 @@
           </p>
           <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
             <div class="rounded-md shadow">
-              <a href="#" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+              <%= link_to listings_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10" do %>
                 Start your search
-              </a>
+              <% end %>
             </div>
           </div>
         </div>
@@ -29,52 +29,37 @@
   <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
     <div class="text-center">
       <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-        Featured Destinations
+        Latest Listings
       </h2>
       <p class="mt-4 text-lg text-gray-500">
-        Explore some of our most popular locations
+        Check out our newest properties
       </p>
     </div>
 
     <div class="mt-12 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      <!-- Destination Card 1 -->
-      <div class="relative rounded-lg overflow-hidden">
-        <div class="relative h-80 w-full">
-          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-               alt="Beach house" 
-               class="w-full h-full object-cover">
-        </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-medium text-gray-900">Beach Houses</h3>
-          <p class="mt-1 text-sm text-gray-500">Perfect for summer getaways</p>
-        </div>
-      </div>
-
-      <!-- Destination Card 2 -->
-      <div class="relative rounded-lg overflow-hidden">
-        <div class="relative h-80 w-full">
-          <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-               alt="Mountain cabin" 
-               class="w-full h-full object-cover">
-        </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-medium text-gray-900">Mountain Cabins</h3>
-          <p class="mt-1 text-sm text-gray-500">Escape to nature</p>
-        </div>
-      </div>
-
-      <!-- Destination Card 3 -->
-      <div class="relative rounded-lg overflow-hidden">
-        <div class="relative h-80 w-full">
-          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-               alt="City apartment" 
-               class="w-full h-full object-cover">
-        </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-medium text-gray-900">City Apartments</h3>
-          <p class="mt-1 text-sm text-gray-500">Experience urban living</p>
-        </div>
-      </div>
+      <% @latest_listings.each do |listing| %>
+        <%= link_to listing_path(listing), class: "group" do %>
+          <div class="relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div class="relative h-80 w-full">
+              <% if listing.images.attached? %>
+                <%= image_tag listing.images.first, class: "w-full h-full object-cover" %>
+              <% else %>
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <span class="text-gray-400">No image available</span>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-4 px-4">
+              <h3 class="text-lg font-medium text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">
+                <%= listing.title %>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">
+                $<%= listing.price_per_night %> per night
+              </p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -88,9 +73,7 @@
     </h2>
     <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
       <div class="inline-flex rounded-md shadow">
-        <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
-          Get started
-        </a>
+        <%= link_to "Get started", listings_path, class: "inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50" %>
       </div>
     </div>
   </div>

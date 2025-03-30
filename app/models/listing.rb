@@ -1,5 +1,6 @@
 class Listing < ApplicationRecord
   belongs_to :user
+  has_many_attached :images
 
   validates :title, :description, :price_per_night, presence: true
   validates :price_per_night, numericality: { greater_than: 0 }
