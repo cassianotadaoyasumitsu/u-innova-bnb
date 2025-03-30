@@ -1,0 +1,40 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Escolha como você quer usar o U-Innova
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Você pode mudar isso depois nas configurações da sua conta
+      </p>
+    </div>
+
+    <%= form_with(url: users_role_selection_path, method: :post, class: "mt-8 space-y-6") do |f| %>
+      <div class="rounded-md shadow-sm space-y-4">
+        <div class="relative">
+          <%= f.radio_button :role, "guest", class: "peer sr-only", id: "guest" %>
+          <%= f.label :role, "Quero reservar acomodações", value: "guest", class: "flex items-center justify-center w-full p-4 text-gray-900 bg-white border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-indigo-600 peer-checked:bg-indigo-50" do %>
+            <div class="block">
+              <div class="w-full text-lg font-semibold">Hóspede</div>
+              <div class="w-full text-sm text-gray-500">Reserve acomodações e aproveite sua estadia</div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="relative">
+          <%= f.radio_button :role, "host", class: "peer sr-only", id: "host" %>
+          <%= f.label :role, "Quero anunciar minha acomodação", value: "host", class: "flex items-center justify-center w-full p-4 text-gray-900 bg-white border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-indigo-600 peer-checked:bg-indigo-50" do %>
+            <div class="block">
+              <div class="w-full text-lg font-semibold">Anfitrião</div>
+              <div class="w-full text-sm text-gray-500">Anuncie sua acomodação e receba hóspedes</div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.submit "Continuar", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      </div>
+    <% end %>
+  </div>
+</div> 

@@ -26,6 +26,11 @@ gem "jbuilder"
 # Use Devise for authentication
 gem "devise"
 
+# OAuth2 for Google authentication
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection" # Prevents CSRF vulnerability
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -56,6 +61,9 @@ group :development, :test do
   # RuboCop
   gem "rubocop-rails-omakase", require: false
   gem "rubocop-rspec", require: false
+
+  # Load environment variables from .env file
+  gem "dotenv-rails"
 end
 
 group :development do
