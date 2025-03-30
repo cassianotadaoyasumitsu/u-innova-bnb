@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   # Host bookings routes
   get 'host/bookings', to: 'bookings#host_index', as: :host_bookings
 
+  # Role switching routes
+  post 'users/become_host', to: 'users#become_host', as: :become_host
+  post 'users/become_guest', to: 'users#become_guest', as: :become_guest
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -22,6 +22,14 @@ class User < ApplicationRecord
     role == "guest"
   end
 
+  def become_host!
+    update(role: :host)
+  end
+
+  def become_guest!
+    update(role: :guest)
+  end
+
   private
 
   def set_default_role

@@ -63,3 +63,8 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+  users:
+    become_host:
+      success: "You are now a host!"
+    become_guest:
+      success: "You are now a guest!"
