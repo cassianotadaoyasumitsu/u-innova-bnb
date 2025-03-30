@@ -1,0 +1,78 @@
+<div class="max-w-2xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">Book <%= @listing.title %></h1>
+
+  <div class="bg-white rounded-lg shadow-md p-8">
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold mb-4">Listing Details</h2>
+      <p class="text-gray-600 mb-2"><%= @listing.description %></p>
+      <p class="text-gray-600">Price per night: <%= number_to_currency(@listing.price_per_night) %></p>
+    </div>
+
+    <%= form_with(model: [@listing, @booking], local: true, class: "space-y-6") do |f| %>
+      <% if @booking.errors.any? %>
+        <div class="bg-red-50 text-red-500 p-4 rounded-md mb-6">
+          <h3 class="font-semibold">Please correct the following errors:</h3>
+          <ul class="list-disc list-inside">
+            <% @booking.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <%= f.label :check_in, "Check-in Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.date_field :check_in, 
+              min: Date.today,
+              class: "mt-1 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+        </div>
+
+        <div>
+          <%= f.label :check_out, "Check-out Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.date_field :check_out, 
+              min: Date.today + 1.day,
+              class: "mt-1 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+        </div>
+      </div>
+
+      <div class="mt-6 p-4 bg-gray-50 rounded-md">
+        <h3 class="text-lg font-semibold">Total Price: <span id="total-price" class="text-indigo-600">$0.00</span></h3>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <%= f.submit "Book Now", class: "w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-lg font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_tag do %>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkInField = document.getElementById('booking_check_in');
+    const checkOutField = document.getElementById('booking_check_out');
+    const totalPriceElement = document.getElementById('total-price');
+    const pricePerNight = <%= @listing.price_per_night %>;
+
+    if (checkInField && checkOutField) {
+      function calculateTotalPrice() {
+        const checkIn = new Date(checkInField.value);
+        const checkOut = new Date(checkOutField.value);
+        
+        if (checkIn && checkOut && checkOut > checkIn) {
+          const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+          const total = nights * pricePerNight;
+          totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+          }).format(total);
+        } else {
+          totalPriceElement.textContent = '$0.00';
+        }
+      }
+
+      checkInField.addEventListener('change', calculateTotalPrice);
+      checkOutField.addEventListener('change', calculateTotalPrice);
+    }
+  });
+<% end %>

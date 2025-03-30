@@ -1,0 +1,63 @@
+<div class="max-w-7xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">My Bookings</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @bookings.each do |booking| %>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <% if booking.listing.images.attached? %>
+          <%= image_tag booking.listing.images.first, class: "w-full h-48 object-cover" %>
+        <% end %>
+        
+        <div class="p-4">
+          <h2 class="text-xl font-semibold mb-2"><%= booking.listing.title %></h2>
+          
+          <div class="space-y-2 text-gray-600">
+            <p>
+              <span class="font-medium">Check-in:</span>
+              <%= booking.check_in.strftime("%B %d, %Y") %>
+            </p>
+            <p>
+              <span class="font-medium">Check-out:</span>
+              <%= booking.check_out.strftime("%B %d, %Y") %>
+            </p>
+            <p>
+              <span class="font-medium">Total Price:</span>
+              <%= number_to_currency(booking.total_price) %>
+            </p>
+            <p>
+              <span class="font-medium">Status:</span>
+              <span class="px-2 py-1 text-sm rounded-full
+                <%= case booking.status
+                    when 'pending' then 'bg-yellow-100 text-yellow-800'
+                    when 'confirmed' then 'bg-green-100 text-green-800'
+                    when 'cancelled' then 'bg-red-100 text-red-800'
+                    end %>">
+                <%= booking.status.titleize %>
+              </span>
+            </p>
+          </div>
+
+          <div class="mt-4 flex space-x-2">
+            <%= link_to "View Details", booking_path(booking), 
+                class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700" %>
+            
+            <% if booking.status == 'pending' %>
+              <%= button_to "Cancel", booking_path(booking), 
+                  method: :delete,
+                  class: "bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700",
+                  data: { confirm: "Are you sure you want to cancel this booking?" } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @bookings.empty? %>
+    <div class="text-center py-12">
+      <p class="text-gray-600">You don't have any bookings yet.</p>
+      <%= link_to "Browse Listings", listings_path, 
+          class: "mt-4 inline-block bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700" %>
+    </div>
+  <% end %>
+</div>

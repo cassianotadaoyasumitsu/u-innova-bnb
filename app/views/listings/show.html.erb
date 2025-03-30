@@ -35,13 +35,79 @@
           <p class="text-gray-600"><%= @listing.address %></p>
         </div>
 
-        <% if user_signed_in? && @listing.user == current_user %>
-          <div class="flex gap-4 mt-8 pt-6 border-t border-gray-200">
-            <%= link_to "Edit Listing", edit_listing_path(@listing), class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
-            <%= button_to "Delete Listing", listing_path(@listing), method: :delete, class: "bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors", data: { confirm: "Are you sure?" } %>
+        <% if user_signed_in? %>
+          <% if @listing.user == current_user %>
+            <div class="flex gap-4 mt-8 pt-6 border-t border-gray-200">
+              <%= link_to "Edit Listing", edit_listing_path(@listing), class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
+              <%= button_to "Delete Listing", listing_path(@listing), method: :delete, class: "bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors", data: { confirm: "Are you sure?" } %>
+            </div>
+          <% else %>
+            <div class="mt-8 pt-6 border-t border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Book this place</h2>
+              <%= form_with(model: [@listing, Booking.new], local: true, class: "space-y-4") do |f| %>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <%= f.label :check_in, "Check-in Date", class: "block text-sm font-medium text-gray-700" %>
+                    <%= f.date_field :check_in, 
+                        min: Date.today,
+                        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+                  </div>
+
+                  <div>
+                    <%= f.label :check_out, "Check-out Date", class: "block text-sm font-medium text-gray-700" %>
+                    <%= f.date_field :check_out, 
+                        min: Date.today + 1.day,
+                        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <h3 class="text-lg font-semibold">Total Price: <span id="total-price">$0.00</span></h3>
+                </div>
+
+                <div class="mt-6">
+                  <%= f.submit "Book Now", class: "w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+            <p class="text-gray-600 mb-4">Please sign in to book this place</p>
+            <%= link_to "Sign In", new_user_session_path, class: "bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition-colors" %>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkInField = document.getElementById('booking_check_in');
+    const checkOutField = document.getElementById('booking_check_out');
+    const totalPriceElement = document.getElementById('total-price');
+    const pricePerNight = <%= @listing.price_per_night %>;
+
+    if (checkInField && checkOutField) {
+      function calculateTotalPrice() {
+        const checkIn = new Date(checkInField.value);
+        const checkOut = new Date(checkOutField.value);
+        
+        if (checkIn && checkOut && checkOut > checkIn) {
+          const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+          const total = nights * pricePerNight;
+          totalPriceElement.textContent = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+          }).format(total);
+        } else {
+          totalPriceElement.textContent = '$0.00';
+        }
+      }
+
+      checkInField.addEventListener('change', calculateTotalPrice);
+      checkOutField.addEventListener('change', calculateTotalPrice);
+    }
+  });
+<% end %>
