@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  listing: one
+  user: one
+  check_in: 2025-03-30 20:30:29
+  check_out: 2025-03-30 20:30:29
+  status: MyString
+  total_price: 9.99
+
+two:
+  listing: two
+  user: two
+  check_in: 2025-03-30 20:30:29
+  check_out: 2025-03-30 20:30:29
+  status: MyString
+  total_price: 9.99
