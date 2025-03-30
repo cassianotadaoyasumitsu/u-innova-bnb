@@ -37,6 +37,10 @@
               <span class="font-medium">Booked on:</span>
               <%= @booking.created_at.strftime("%B %d, %Y") %>
             </p>
+            <p>
+              <span class="font-medium">Guest Email:</span>
+              <%= @booking.user.email %>
+            </p>
           </div>
         </div>
 
