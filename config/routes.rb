@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   end
   
   resources :bookings, only: [:index, :show, :edit, :update, :destroy]
+  
+  # Host bookings routes
+  get 'host/bookings', to: 'bookings#host_index', as: :host_bookings
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

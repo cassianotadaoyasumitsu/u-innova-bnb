@@ -2,9 +2,17 @@ class BookingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
   before_action :set_listing, only: [:new, :create]
+  before_action :ensure_host!, only: [:host_index]
 
   def index
     @bookings = current_user.bookings.includes(:listing)
+  end
+
+  def host_index
+    @bookings = Booking.joins(:listing)
+                      .where(listings: { user_id: current_user.id })
+                      .includes(:listing, :user)
+                      .order(created_at: :desc)
   end
 
   def show
@@ -56,12 +64,18 @@ class BookingsController < ApplicationController
   end
 
   def booking_params
-    params.require(:booking).permit(:check_in, :check_out)
+    params.require(:booking).permit(:check_in, :check_out, :status)
   end
 
   def authorize_booking
     unless @booking.user == current_user || @booking.listing.user == current_user
       redirect_to root_path, alert: 'You are not authorized to perform this action.'
+    end
+  end
+
+  def ensure_host!
+    unless current_user.host?
+      redirect_to root_path, alert: 'You must be a host to access this page.'
     end
   end
 end

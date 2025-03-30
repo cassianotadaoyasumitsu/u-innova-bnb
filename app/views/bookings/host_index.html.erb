@@ -1,0 +1,72 @@
+<div class="max-w-7xl mx-auto p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Bookings for My Listings</h1>
+    <%= link_to "Back to My Listings", listings_path, class: "text-indigo-600 hover:text-indigo-800" %>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <ul class="divide-y divide-gray-200">
+      <% @bookings.each do |booking| %>
+        <li>
+          <div class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <% if booking.listing.images.attached? %>
+                  <%= image_tag booking.listing.images.first, class: "h-16 w-16 object-cover rounded-lg" %>
+                <% end %>
+                <div class="ml-4">
+                  <h3 class="text-lg font-medium text-gray-900">
+                    <%= booking.listing.title %>
+                  </h3>
+                  <p class="text-sm text-gray-500">
+                    Booked by <%= booking.user.email %>
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <span class="px-3 py-1 text-sm rounded-full
+                  <%= case booking.status
+                      when 'pending' then 'bg-yellow-100 text-yellow-800'
+                      when 'confirmed' then 'bg-green-100 text-green-800'
+                      when 'cancelled' then 'bg-red-100 text-red-800'
+                      end %>">
+                  <%= booking.status.titleize %>
+                </span>
+                <%= link_to "View Details", booking_path(booking), 
+                    class: "text-indigo-600 hover:text-indigo-900" %>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-gray-200">
+            <dl>
+              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Check-in</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <%= booking.check_in.strftime("%B %d, %Y") %>
+                </dd>
+              </div>
+              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Check-out</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <%= booking.check_out.strftime("%B %d, %Y") %>
+                </dd>
+              </div>
+              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total Price</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <%= number_to_currency(booking.total_price) %>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% if @bookings.empty? %>
+    <div class="text-center py-12">
+      <p class="text-gray-600">You don't have any bookings for your listings yet.</p>
+    </div>
+  <% end %>
+</div> 
