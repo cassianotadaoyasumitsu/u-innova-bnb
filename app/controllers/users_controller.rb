@@ -4,12 +4,12 @@ class UsersController < ApplicationController
 
   def become_host
     @user.become_host!
-    redirect_to root_path, notice: "You are now a host!"
+    redirect_to root_path, notice: t('users.become_host.success')
   end
 
   def become_guest
     @user.become_guest!
-    redirect_to root_path, notice: "You are now a guest!"
+    redirect_to root_path, notice: t('users.become_guest.success')
   end
 
   private

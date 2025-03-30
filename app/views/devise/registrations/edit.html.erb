@@ -12,10 +12,10 @@
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "mt-8 space-y-6" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <%= f.label :email, class: "sr-only" %>
-          <%= f.email_field :email, autocomplete: "email", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Email address" %>
+      <div class="rounded-md shadow-sm -space-y-px bg-white p-6">
+        <div class="mb-4">
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.email_field :email, autocomplete: "email", class: "appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Email address" %>
         </div>
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -24,29 +24,57 @@
           </div>
         <% end %>
 
-        <div>
-          <%= f.label :password, class: "sr-only" %>
-          <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "New password (leave blank if you don't want to change it)" %>
+        <div class="mb-4">
+          <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "New password (leave blank if you don't want to change it)" %>
         </div>
 
-        <div>
-          <%= f.label :password_confirmation, class: "sr-only" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Confirm new password" %>
+        <div class="mb-4">
+          <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Confirm new password" %>
+        </div>
+      </div>
+
+      <div class="rounded-md bg-white p-6 border border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Account Type</h3>
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-700">Current Role</p>
+              <p class="text-sm text-gray-500"><%= current_user.role.titleize %></p>
+            </div>
+            <% if current_user.host? %>
+              <%= button_to "Switch to Guest", become_guest_path, method: :post, class: "ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            <% else %>
+              <%= button_to "Become a Host", become_host_path, method: :post, class: "ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            <% end %>
+          </div>
+          <div class="text-sm text-gray-500">
+            <% if current_user.host? %>
+              <p>As a host, you can:</p>
+              <ul class="list-disc pl-5 mt-2">
+                <li>Create and manage listings</li>
+                <li>View and manage bookings for your properties</li>
+                <li>Switch to guest mode to book other properties</li>
+              </ul>
+            <% else %>
+              <p>As a guest, you can:</p>
+              <ul class="list-disc pl-5 mt-2">
+                <li>Book properties from other hosts</li>
+                <li>Manage your bookings</li>
+                <li>Become a host to list your own properties</li>
+              </ul>
+            <% end %>
+          </div>
         </div>
       </div>
 
       <div>
-        <%= f.submit "Update profile", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <%= f.submit "Update Profile", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
       </div>
     <% end %>
 
-    <div class="text-center space-y-4">
-      <div>
-        <h3 class="text-lg font-medium text-gray-900">Cancel my account</h3>
-        <p class="mt-1 text-sm text-gray-500">
-          Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "font-medium text-red-600 hover:text-red-500" %>
-        </p>
-      </div>
+    <div class="text-center">
       <%= link_to "Back", :back, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
     </div>
   </div>
